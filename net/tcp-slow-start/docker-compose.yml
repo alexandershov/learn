@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  client:
+    build: .
+    volumes:
+      - .:/code
+    environment:
+      - TSS_HOST
+      - TSS_PORT
