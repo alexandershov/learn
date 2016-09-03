@@ -17,4 +17,6 @@ $ TSS_HOST=remote_host TSS_PORT=1234 python client.py
 ```
 
 ## Results
+Function of throughput over time is exponential: throughput is small at
+ first, then it gets better.
 ![Tcp slow start](tcp-slow-start.png)
