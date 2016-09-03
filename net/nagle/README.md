@@ -17,3 +17,9 @@ $ NGL_HOST=remote_host NGL_PORT=1234 NGL_TCP_NODELAY=1 python client.py
 and look at wireshark/tcpdump for `host remote_host and port 1234`
 
 ## Notes
+Nagle algorithm is: if there's some unacked packets and current packet
+size is less than MTU, then don't send new packet immediately. Wait for
+an ACK or wait for more data.
+
+This behaviour can be switched off with TCP_NODELAY flag. In this case
+we'll send new data as soon as possible.
