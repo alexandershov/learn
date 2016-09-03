@@ -3,7 +3,7 @@ Code for checking various stuff I learn.
 
 ## Links
 
-### Networks
-* [TCP slow start ](net/tcp-slow-start)
-* [Nagle algorithm](net/nagle)
+* [__Networks__](net)
+ * [TCP slow start ](net/tcp-slow-start)
+ * [Nagle algorithm](net/nagle)
 
