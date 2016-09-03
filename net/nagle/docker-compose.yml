@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  client:
+    build: .
+    volumes:
+      - .:/code
+    environment:
+      - NGL_HOST
+      - NGL_PORT
+      - NGL_TCP_NODELAY
