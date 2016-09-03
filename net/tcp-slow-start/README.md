@@ -7,7 +7,7 @@ Some code to check that TCP indeed has slow start
 On `remote_host` run:
 
 ```shell
-$ ./server.sh 1234
+$ yes data | nc -l 1234
 ```
 
 On local host run:
