@@ -23,3 +23,8 @@ an ACK or wait for more data.
 
 This behaviour can be switched off with TCP_NODELAY flag. In this case
 we'll send new data as soon as possible.
+
+## Lessons learned
+I've spent a lot of time creating sockets with TCP_NODELAY and still
+having Nagle on. The reason was simple - I set TCP_NODELAY inside of
+the Docker container and Mac OS X was completely unaware of it.
