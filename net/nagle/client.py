@@ -3,6 +3,7 @@ import logging
 import os
 import socket
 
+
 def main():
     host = _get_env('NGL_HOST')
     port = int(_get_env('NGL_PORT'))

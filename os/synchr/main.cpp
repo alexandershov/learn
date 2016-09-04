@@ -88,7 +88,3 @@ int main() {
         std::perror("sem_unlink");
     }
 }
-
-
-
-
