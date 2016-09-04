@@ -30,7 +30,6 @@ void *do_stuff(void *data) {
     std::cout << "got semaphore! " << thread_id << std::endl;
     pthread_mutex_unlock(s_data->mutex);
 
-
     pthread_mutex_lock(s_data->mutex);
     std::cout << "my id = " << thread_id << std::endl;
     pthread_mutex_unlock(s_data->mutex);
@@ -57,8 +56,22 @@ void join_threads(std::vector<pthread_t> all_threads) {
 int main() {
     synchr_data_t data;
     pthread_mutex_t mutex;
-    pthread_mutex_init(&mutex, nullptr);
+    pthread_mutexattr_t attr;
+    pthread_mutexattr_init(&attr);
+    pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+    pthread_mutex_init(&mutex, &attr);
     data.mutex = &mutex;
+    if (pthread_mutex_lock(&mutex)) {
+        std::perror("main first mutex_lock");
+    }
+    std::cout << "got mutex for the first time!" << std::endl;
+    if (pthread_mutex_lock(&mutex)) {
+        std::perror("main second mutex_lock");
+    }
+    std::cout << "got mutex twice! because it's recursive." << std::endl;
+    pthread_mutex_unlock(&mutex);
+//    number of unlocks on recursive mutex should be the same as the number of locks
+    pthread_mutex_unlock(&mutex);
     const char *path = "/learn_os_synchr";
     sem_t *semaphore = sem_open(path, O_CREAT, 0644, SEM_VALUE);
     if (semaphore == SEM_FAILED) {
