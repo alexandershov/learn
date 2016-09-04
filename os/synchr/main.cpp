@@ -1,11 +1,14 @@
 #include <pthread.h>
 #include <semaphore.h>
 
+#include <cstdio>
+#include <cstdlib>
 #include <iostream>
 #include <vector>
 
 
 const int NUM_THREADS = 10;
+const uint32_t SEM_VALUE = 3;
 
 
 struct synchr_data_t {
@@ -15,14 +18,23 @@ struct synchr_data_t {
 
 
 void *do_stuff(void *data) {
-    synchr_data_t *s_data = (synchr_data_t*)data;
+    synchr_data_t *s_data = (synchr_data_t *) data;
     auto thread = pthread_self();
     // pthread_mach_thread_np is Mac OS X specific
     auto thread_id = pthread_mach_thread_np(thread);
 
+    if (sem_wait(s_data->semaphore)) {
+        std::perror("sem_wait");
+    }
+    pthread_mutex_lock(s_data->mutex);
+    std::cout << "got semaphore! " << thread_id << std::endl;
+    pthread_mutex_unlock(s_data->mutex);
+
+
     pthread_mutex_lock(s_data->mutex);
     std::cout << "my id = " << thread_id << std::endl;
     pthread_mutex_unlock(s_data->mutex);
+    sem_post(s_data->semaphore);
     return nullptr;
 }
 
@@ -46,10 +58,22 @@ int main() {
     synchr_data_t data;
     pthread_mutex_t mutex;
     pthread_mutex_init(&mutex, nullptr);
-    sem_t semaphore;
     data.mutex = &mutex;
+    const char *path = "/learn_os_synchr";
+    sem_t *semaphore = sem_open(path, O_CREAT, 0644, SEM_VALUE);
+    if (semaphore == SEM_FAILED) {
+        std::perror("sem_open");
+    }
+    data.semaphore = semaphore;
     auto all_threads = create_threads(NUM_THREADS, &data);
     join_threads(all_threads);
+    pthread_mutex_destroy(&mutex);
+    if (sem_close(semaphore)) {
+        std::perror("sem_close");
+    }
+    if (sem_unlink(path)) {
+        std::perror("sem_unlink");
+    }
 }
 
 
