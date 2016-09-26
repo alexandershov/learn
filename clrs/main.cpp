@@ -14,10 +14,11 @@ int main() {
 }
 
 void test_insort() {
-    insort_test_case("basic", {8, 2, 1}, {1, 2, 8});
-    insort_test_case("already sorted", {1, 3, 7}, {1, 3, 7});
+    insort_test_case("basic", {1, 6, 2}, {1, 2, 6});
     insort_test_case("empty", {}, {});
     insort_test_case("singleton", {8}, {8});
+    insort_test_case("reverse sorted", {8, 2, 1}, {1, 2, 8});
+    insort_test_case("already sorted", {1, 3, 7}, {1, 3, 7});
     insort_test_case("same value", {1, 1, 1, 1}, {1, 1, 1, 1});
 }
 
@@ -29,6 +30,8 @@ void insort_test_case(std::string name, std::vector<int> input, std::vector<int>
                   << " != "
                   << vector_to_string(expected)
                   << std::endl;
+    } else {
+        std::cout << name << "... ok!" << std::endl;
     }
 }
 
