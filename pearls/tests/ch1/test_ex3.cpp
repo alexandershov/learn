@@ -2,7 +2,15 @@
 #include "Bitvector.h"
 
 
-TEST(test_is_set_empty, test_eq) {
+TEST(BitvectorTest, IsNotSetByDefault) {
     ch1::Bitvector bitvector(200);
-    ASSERT_EQ(bitvector.is_set(0), false);
+    EXPECT_FALSE(bitvector.is_set(0));
+    EXPECT_FALSE(bitvector.is_set(199));
 }
+
+TEST(BitvectorTest, IsSetWorks) {
+    ch1::Bitvector bitvector(200);
+    bitvector.set(10, true);
+    EXPECT_TRUE(bitvector.is_set(10));
+}
+
