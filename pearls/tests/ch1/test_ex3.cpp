@@ -2,15 +2,23 @@
 #include "Bitvector.h"
 
 
-TEST(BitvectorTest, IsNotSetByDefault) {
+class BitvectorTest : public ::testing::TestWithParam<size_t> {
+
+};
+
+
+TEST_P(BitvectorTest, IsNotSetByDefault) {
     ch1::Bitvector bitvector(200);
-    EXPECT_FALSE(bitvector.is_set(0));
-    EXPECT_FALSE(bitvector.is_set(199));
+    EXPECT_FALSE(bitvector.is_set(GetParam()));
 }
 
-TEST(BitvectorTest, IsSetWorks) {
+TEST_P(BitvectorTest, IsSetWorks) {
     ch1::Bitvector bitvector(200);
-    bitvector.set(10, true);
-    EXPECT_TRUE(bitvector.is_set(10));
+    bitvector.set(GetParam(), true);
+    EXPECT_TRUE(bitvector.is_set(GetParam()));
 }
 
+INSTANTIATE_TEST_CASE_P(
+        InterestingBits,
+        BitvectorTest,
+        ::testing::Values(0, 32, 34, 199));
