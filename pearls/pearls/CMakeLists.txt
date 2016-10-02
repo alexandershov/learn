@@ -5,6 +5,6 @@ set(HEADER_FILES
 
 set(SOURCE_FILES
 
-        Bitvector.cpp Bitvector.h)
+        Bitvector.cpp Bitvector.h NumbersGenerator.cpp NumbersGenerator.h)
 
 add_library(pearls_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
