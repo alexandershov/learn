@@ -2,7 +2,7 @@
 #include "Bitvector.h"
 
 
-TEST(basic_check, test_eq) {
-    Bitvector bitvector;
-    EXPECT_EQ(bitvector.count(), 9);
+TEST(test_is_set_empty, test_eq) {
+    ch1::Bitvector bitvector(200);
+    ASSERT_EQ(bitvector.is_set(0), false);
 }
