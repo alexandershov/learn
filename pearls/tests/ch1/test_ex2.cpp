@@ -19,3 +19,11 @@ INSTANTIATE_TEST_CASE_P(
         InterestingShifts,
         BitOpsRightShiftTest,
         ::testing::Values(0, 1, 3, 63, 64, 65, 128));
+
+
+TEST(IsSetTest, IsSetWorks) {
+    std::size_t x = std::size_t{1} << 3;
+    x |= 1;
+    ASSERT_TRUE(ch1::IsSet(x, 0));
+    ASSERT_FALSE(ch1::IsSet(x, 1));
+}
