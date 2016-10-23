@@ -12,8 +12,7 @@ TEST_P(BitOpsLeftShiftTest, ItCanLeftShiftIntegers) {
     if (num_bits < (CHAR_BIT * sizeof(std::size_t))) {
         expected_result = std::size_t{1} << num_bits;
     }
-    ch1::ArithmeticBitOps bit_ops;
-    EXPECT_EQ(bit_ops.LeftShift(1, num_bits), expected_result);
+    EXPECT_EQ(ch1::ArithmeticBitOps::LeftShift(1, num_bits), expected_result);
 }
 
 INSTANTIATE_TEST_CASE_P(
@@ -25,8 +24,7 @@ INSTANTIATE_TEST_CASE_P(
 TEST(IsSetTest, IsSetWorks) {
     std::size_t x = std::size_t{1} << 3;
     x |= 1;
-    ch1::ArithmeticBitOps bit_ops;
-    ch1::BitVectorOps<ch1::ArithmeticBitOps> bit_vector_ops(bit_ops);
+    ch1::BitVectorOps<ch1::ArithmeticBitOps> bit_vector_ops;
     EXPECT_TRUE(bit_vector_ops.is_set(x, 0));
     EXPECT_FALSE(bit_vector_ops.is_set(x, 1));
     EXPECT_TRUE(bit_vector_ops.is_set(x, 3));
@@ -34,8 +32,7 @@ TEST(IsSetTest, IsSetWorks) {
 }
 
 TEST(SetBitTest, SetBitWorks) {
-    ch1::ArithmeticBitOps bit_ops;
-    ch1::BitVectorOps<ch1::ArithmeticBitOps> bit_vector_ops(bit_ops);
+    ch1::BitVectorOps<ch1::ArithmeticBitOps> bit_vector_ops;
 
     std::size_t x = 0;
     bit_vector_ops.set_bit(x, 10);
