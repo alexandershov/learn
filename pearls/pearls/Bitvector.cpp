@@ -10,7 +10,7 @@ size_t get_num_items(size_t size) {
     return result;
 }
 
-ch1::Bitvector::Bitvector(size_t size) : storage(get_num_items(size), 0) {
+ch1::Bitvector::Bitvector(size_t size) : size_(size), storage(get_num_items(size), 0) {
 
 }
 
@@ -36,4 +36,8 @@ ch1::Position ch1::Bitvector::get_position(size_t index) {
     auto bit_index = index % ch1::Bitvector::size_in_bits;
     ch1::Position result = {storage_index, bit_index};
     return result;
+}
+
+size_t ch1::Bitvector::size() {
+    return size_;
 }

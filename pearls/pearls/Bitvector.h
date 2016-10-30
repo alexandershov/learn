@@ -22,8 +22,11 @@ namespace ch1 {
 
         void set(size_t index, bool value);
 
+        size_t size();
+
     private:
         std::vector<elem_type> storage;
+        size_t size_;
 
         Position get_position(size_t index);
     };
