@@ -52,10 +52,25 @@ std::vector<size_t> _cpp_sort(const std::vector<size_t> &numbers) {
 }
 
 TEST(SortTest, CheckPerformance) {
+// bitvector_sort is about 30% slower than std::sort on this data
     std::vector<size_t> numbers = _generate_numbers(28000, 27000);
     EXPECT_EQ(numbers.size(), 27000);
+    auto bitvector_start = std::chrono::steady_clock::now();
     std::vector<size_t> bitvector_sorted_numbers = ch1::bitvector_sort(numbers);
+    auto bitvector_end = std::chrono::steady_clock::now();
+    auto bitvector_duration = std::chrono::duration_cast<std::chrono::microseconds>(
+            bitvector_end - bitvector_start).count();
+
+    auto cpp_start = std::chrono::steady_clock::now();
     std::vector<size_t> cpp_sorted_numbers = _cpp_sort(numbers);
+    auto cpp_end = std::chrono::steady_clock::now();
+    auto cpp_duration = std::chrono::duration_cast<std::chrono::microseconds>(
+            cpp_end - cpp_start).count();
+    testing::internal::CaptureStdout();
+    std::cout << "bitvector took " << bitvector_duration << " microseconds" << std::endl;
+    std::cout << "cpp took " << cpp_duration << " microseconds" << std::endl;
+//    we need next line so te
+    testing::internal::GetCapturedStdout();
     EXPECT_EQ(bitvector_sorted_numbers, cpp_sorted_numbers);
 }
 
