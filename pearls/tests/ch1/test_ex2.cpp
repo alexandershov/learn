@@ -24,19 +24,16 @@ INSTANTIATE_TEST_CASE_P(
 TEST(IsSetTest, IsSetWorks) {
     std::size_t x = std::size_t{1} << 3;
     x |= 1;
-    ch1::BitVectorOps<ch1::ArithmeticBitOps> bit_vector_ops;
-    EXPECT_TRUE(bit_vector_ops.is_set(x, 0));
-    EXPECT_FALSE(bit_vector_ops.is_set(x, 1));
-    EXPECT_TRUE(bit_vector_ops.is_set(x, 3));
-    EXPECT_FALSE(bit_vector_ops.is_set(x, 4));
+    EXPECT_TRUE(ch1::logic_bit_vector_ops_t::is_set(x, 0));
+    EXPECT_FALSE(ch1::logic_bit_vector_ops_t::is_set(x, 1));
+    EXPECT_TRUE(ch1::logic_bit_vector_ops_t::is_set(x, 3));
+    EXPECT_FALSE(ch1::logic_bit_vector_ops_t::is_set(x, 4));
 }
 
 TEST(SetBitTest, SetBitWorks) {
-    ch1::BitVectorOps<ch1::ArithmeticBitOps> bit_vector_ops;
-
     std::size_t x = 0;
-    bit_vector_ops.set_bit(x, 10);
-    EXPECT_TRUE(bit_vector_ops.is_set(x, 10));
-    bit_vector_ops.set_bit(x, 10);
-    EXPECT_TRUE(bit_vector_ops.is_set(x, 10));
+    ch1::logic_bit_vector_ops_t::set_bit(x, 10);
+    EXPECT_TRUE(ch1::logic_bit_vector_ops_t::is_set(x, 10));
+    ch1::logic_bit_vector_ops_t::set_bit(x, 10);
+    EXPECT_TRUE(ch1::logic_bit_vector_ops_t::is_set(x, 10));
 }

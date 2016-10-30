@@ -22,11 +22,11 @@ namespace ch1 {
     template<class BitOps>
     class BitVectorOps {
     public:
-        bool is_set(size_t x, size_t index) {
+        static bool is_set(size_t x, size_t index) {
             return (BitOps::RightShift(x, index) % 2) != 0;
         }
 
-        void set_bit(size_t &x, size_t index) {
+        static void set_bit(size_t &x, size_t index) {
             if (is_set(x, index)) {
                 return;
             }
@@ -34,6 +34,8 @@ namespace ch1 {
             x += mask;
         }
     };
+
+    typedef BitVectorOps<LogicBitOps> logic_bit_vector_ops_t;
 }
 
 #endif //PEARLS_BITOPS_H
