@@ -2,6 +2,9 @@
 #include "Bitvector.h"
 
 std::vector<size_t> ch1::bitvector_sort(const std::vector<size_t> &numbers) {
+    if (numbers.size() == 0) {
+        return {};
+    }
     ch1::Bitvector bitvector(1 + *std::max_element(numbers.begin(), numbers.end()));
     for (size_t one_number: numbers) {
         bitvector.set(one_number, true);
