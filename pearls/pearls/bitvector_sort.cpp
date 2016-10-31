@@ -13,7 +13,11 @@ std::vector<size_t> ch1::bitvector_sort(const std::vector<size_t> &numbers, size
         ch1::Bitvector bitvector(max_num_bits);
         for (size_t one_number: numbers) {
             if (one_number >= offset && one_number < offset + max_num_bits) {
-                bitvector.set(one_number - offset, true);
+                size_t index = one_number - offset;
+                if (bitvector.is_set(index)) {
+                    throw ch1::InvalidNumbers();
+                }
+                bitvector.set(index, true);
             }
         }
         for (size_t i = 0; i < bitvector.size(); i++) {
