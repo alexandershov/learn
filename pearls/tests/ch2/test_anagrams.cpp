@@ -23,5 +23,11 @@ bool contains(const std::vector<std::string> &strings, const std::string &string
 TEST(Permutations, ItWorks) {
     AppendingCallback callback;
     ch2::for_each_permutation("tes", callback);
+    EXPECT_EQ(callback.strings.size(), 6);
     EXPECT_CONTAINS(callback.strings, "tes");
+    EXPECT_CONTAINS(callback.strings, "tse");
+    EXPECT_CONTAINS(callback.strings, "ets");
+    EXPECT_CONTAINS(callback.strings, "est");
+    EXPECT_CONTAINS(callback.strings, "set");
+    EXPECT_CONTAINS(callback.strings, "ste");
 }
