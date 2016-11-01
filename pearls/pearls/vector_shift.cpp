@@ -1,4 +1,3 @@
-
 #include "vector_shift.h"
 
 void ch2::left_shift_vector(std::vector<int> &numbers, size_t shift) {
