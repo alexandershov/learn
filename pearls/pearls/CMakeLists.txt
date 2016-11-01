@@ -11,6 +11,6 @@ set(SOURCE_FILES
         endianness.h
         endianness.cpp
         bitops.cpp
-        bitops.h bitvector_sort.cpp bitvector_sort.h)
+        bitops.h bitvector_sort.cpp bitvector_sort.h vector_shift.cpp vector_shift.h)
 
 add_library(pearls_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
