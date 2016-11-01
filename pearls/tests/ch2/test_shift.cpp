@@ -17,3 +17,10 @@ TEST(InPlaceShift, ZeroShiftDoesNothing) {
     std::vector<int> expected_shifted_vector{0, 1, 2, 3, 4};
     EXPECT_EQ(numbers, expected_shifted_vector);
 }
+
+TEST(InPlaceShift, HugeShiftIsShiftModulo) {
+    std::vector<int> numbers{0, 1, 2, 3, 4};
+    ch2::left_shift_vector(numbers, 6);
+    std::vector<int> expected_shifted_vector{1, 2, 3, 4, 0};
+    EXPECT_EQ(numbers, expected_shifted_vector);
+}
