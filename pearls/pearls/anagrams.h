@@ -4,6 +4,7 @@
 #include <string>
 
 namespace ch2 {
+//    TODO: analyze complexity of this algorithm
     template<class callback_t>
     void for_each_permutation(std::string s, callback_t &callback, size_t start = 0) {
         if (start == s.size()) {
