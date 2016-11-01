@@ -25,6 +25,7 @@ ssize_t ch2::get_missing_number(std::vector<size_t> &numbers) {
         }
         size_t i = (begin + end) / 2;
         if (!_range_is_full(numbers, begin, i + 1)) {
+//            TODO: hmm, looks suspicious, is end decreasing here?
             end = i + 1;
         } else if (!_range_is_full(numbers, i, end)) {
             begin = i;
