@@ -4,9 +4,14 @@
 #include "vector_shift.h"
 
 
-TEST(InPlaceShift, ItWorks) {
+class InPlaceShiftAlgo : public ::testing::TestWithParam<
+        std::function<void(std::vector<int>&, size_t)>> {
+};
+
+TEST_P(InPlaceShiftAlgo, ItWorks) {
     std::vector<int> numbers{0, 1, 2, 3, 4};
-    ch2::left_shift_vector(numbers, 3);
+    auto shift_algorithm = GetParam();
+    shift_algorithm(numbers, 3);
     std::vector<int> expected_shifted_vector{3, 4, 0, 1, 2};
     EXPECT_EQ(numbers, expected_shifted_vector);
 }
@@ -38,3 +43,14 @@ TEST(InPlaceShift, ShiftByFullChunk) {
     std::vector<int> expected_shifted_vector{3, 4, 0, 1, 2};
     EXPECT_EQ(numbers, expected_shifted_vector);
 }
+
+
+void left_shift_vector(std::vector<int> &numbers, size_t shift) {
+    ch2::left_shift_vector(numbers, shift, shift);
+}
+
+
+INSTANTIATE_TEST_CASE_P(
+        ShiftAlgorithms,
+        InPlaceShiftAlgo,
+        ::testing::Values(left_shift_vector));
