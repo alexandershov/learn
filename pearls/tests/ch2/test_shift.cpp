@@ -57,5 +57,6 @@ INSTANTIATE_TEST_CASE_P(
         InPlaceShiftAlgo,
         ::testing::Values(
                 left_shift_vector,
-                ch2::reversing_left_shift_vector
+                ch2::reversing_left_shift_vector,
+                ch2::recursive_left_shift_vector
         ));
