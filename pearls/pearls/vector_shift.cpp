@@ -32,6 +32,7 @@ void reverse_range(Iterator begin, Iterator end) {
 }
 
 void ::ch2::reversing_left_shift_vector(std::vector<int> &numbers, size_t shift) {
+    shift %= numbers.size();
     reverse_range(numbers.begin(), numbers.end());
     reverse_range(numbers.begin(), numbers.end() - shift);
     reverse_range(numbers.end() - shift, numbers.end());
