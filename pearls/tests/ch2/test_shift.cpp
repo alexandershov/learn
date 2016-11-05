@@ -21,16 +21,18 @@ TEST_P(InPlaceShiftAlgo, ItWorks) {
     EXPECT_EQ(numbers, expected_shifted_vector);
 }
 
-TEST(InPlaceShift, ZeroShiftDoesNothing) {
+TEST_P(InPlaceShiftAlgo, ZeroShiftDoesNothing) {
     std::vector<int> numbers{0, 1, 2, 3, 4};
-    left_shift_vector(numbers, 0);
+    auto shift_algorithm = GetParam();
+    shift_algorithm(numbers, 0);
     std::vector<int> expected_shifted_vector{0, 1, 2, 3, 4};
     EXPECT_EQ(numbers, expected_shifted_vector);
 }
 
-TEST(InPlaceShift, HugeShiftIsShiftModulo) {
+TEST_P(InPlaceShiftAlgo, HugeShiftIsShiftModulo) {
     std::vector<int> numbers{0, 1, 2, 3, 4};
-    left_shift_vector(numbers, 6);
+    auto shift_algorithm = GetParam();
+    shift_algorithm(numbers, 6);
     std::vector<int> expected_shifted_vector{1, 2, 3, 4, 0};
     EXPECT_EQ(numbers, expected_shifted_vector);
 }
