@@ -1,6 +1,6 @@
 #include "vector_shift.h"
 
-void ch2::left_shift_vector(std::vector<int> &numbers, size_t shift, size_t chunk_size) {
+void ch2::naive_left_shift_vector(std::vector<int> &numbers, size_t shift, size_t chunk_size) {
     shift %= numbers.size();
     while (shift) {
         auto actual_chunk_size = std::max(chunk_size, shift);
@@ -20,4 +20,19 @@ void ch2::left_shift_vector(std::vector<int> &numbers, size_t shift, size_t chun
             shift -= actual_chunk_size;
         }
     }
+}
+
+template<class Iterator>
+void reverse_range(Iterator begin, Iterator end) {
+    while (begin < end) {
+        end--;
+        std::swap(*begin, *end);
+        begin++;
+    }
+}
+
+void ::ch2::reversing_left_shift_vector(std::vector<int> &numbers, size_t shift) {
+    reverse_range(numbers.begin(), numbers.end());
+    reverse_range(numbers.begin(), numbers.end() - shift);
+    reverse_range(numbers.end() - shift, numbers.end());
 }
