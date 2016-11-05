@@ -72,30 +72,31 @@ void ::ch2::recursive_left_shift_vector(std::vector<int> &numbers, size_t shift)
 }
 
 void ::ch2::juggling_left_shift_vector(std::vector<int> &numbers, size_t shift) {
-    std::unordered_set<size_t> seen_indexes;
     shift %= numbers.size();
+    std::unordered_set<size_t> seen_indexes;
     size_t first_not_seen_index = 0;
     while (first_not_seen_index < numbers.size()) {
-        if (std::find(seen_indexes.begin(), seen_indexes.end(), first_not_seen_index) != seen_indexes.end()) {
+        if (std::find(seen_indexes.begin(), seen_indexes.end(), first_not_seen_index) !=
+            seen_indexes.end()) {
             first_not_seen_index++;
             continue;
         }
         auto tmp = numbers[first_not_seen_index];
         size_t i = first_not_seen_index;
         size_t stop_index = first_not_seen_index;
-        while (i != stop_index) {
-            if (std::find(seen_indexes.begin(), seen_indexes.end(), i) != seen_indexes.end()) {
-                break;
-            }
+        do {
             auto j = (i + shift) % numbers.size();
             if (j != stop_index) {
                 numbers[i] = numbers[j];
             } else {
                 numbers[i] = tmp;
             }
+            if (std::find(seen_indexes.begin(), seen_indexes.end(), i) != seen_indexes.end()) {
+                break;
+            }
             seen_indexes.insert(i);
             i = j;
-        }
+        } while (i != stop_index);
         first_not_seen_index++;
     }
 }
