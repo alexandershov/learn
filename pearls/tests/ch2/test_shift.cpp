@@ -58,5 +58,6 @@ INSTANTIATE_TEST_CASE_P(
         ::testing::Values(
                 left_shift_vector,
                 ch2::reversing_left_shift_vector,
-                ch2::recursive_left_shift_vector
+                ch2::recursive_left_shift_vector,
+                ch2::juggling_left_shift_vector
         ));
