@@ -3,7 +3,7 @@
 void ch2::naive_left_shift_vector(std::vector<int> &numbers, size_t shift, size_t chunk_size) {
     shift %= numbers.size();
     while (shift) {
-        auto actual_chunk_size = std::max(chunk_size, shift);
+        auto actual_chunk_size = std::min(chunk_size, shift);
         auto chunk_begin = 0;
         auto chunk_end = chunk_begin + actual_chunk_size;
         std::vector<int> chunk(numbers.begin(), numbers.begin() + actual_chunk_size);

@@ -4,9 +4,14 @@
 #include "vector_shift.h"
 
 
+void left_shift_vector(std::vector<int> &numbers, size_t shift) {
+    ch2::naive_left_shift_vector(numbers, shift, shift);
+}
+
 class InPlaceShiftAlgo : public ::testing::TestWithParam<
         std::function<void(std::vector<int> &, size_t)>> {
 };
+
 
 TEST_P(InPlaceShiftAlgo, ItWorks) {
     std::vector<int> numbers{0, 1, 2, 3, 4};
@@ -18,14 +23,14 @@ TEST_P(InPlaceShiftAlgo, ItWorks) {
 
 TEST(InPlaceShift, ZeroShiftDoesNothing) {
     std::vector<int> numbers{0, 1, 2, 3, 4};
-    ch2::naive_left_shift_vector(numbers, 0);
+    left_shift_vector(numbers, 0);
     std::vector<int> expected_shifted_vector{0, 1, 2, 3, 4};
     EXPECT_EQ(numbers, expected_shifted_vector);
 }
 
 TEST(InPlaceShift, HugeShiftIsShiftModulo) {
     std::vector<int> numbers{0, 1, 2, 3, 4};
-    ch2::naive_left_shift_vector(numbers, 6);
+    left_shift_vector(numbers, 6);
     std::vector<int> expected_shifted_vector{1, 2, 3, 4, 0};
     EXPECT_EQ(numbers, expected_shifted_vector);
 }
@@ -42,11 +47,6 @@ TEST(InPlaceShift, ShiftByFullChunk) {
     ch2::naive_left_shift_vector(numbers, 3, 3);
     std::vector<int> expected_shifted_vector{3, 4, 0, 1, 2};
     EXPECT_EQ(numbers, expected_shifted_vector);
-}
-
-
-void left_shift_vector(std::vector<int> &numbers, size_t shift) {
-    ch2::naive_left_shift_vector(numbers, shift, shift);
 }
 
 
