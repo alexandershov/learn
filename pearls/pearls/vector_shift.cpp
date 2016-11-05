@@ -44,7 +44,7 @@ void ::ch2::reversing_left_shift_vector(std::vector<int> &numbers, size_t shift)
 }
 
 
-template <class Iterator>
+template<class Iterator>
 void swap_range(Iterator x, Iterator y, size_t size) {
     for (auto i = std::size_t{0}; i < size; i++) {
         std::swap(*x++, *y++);
@@ -54,17 +54,15 @@ void swap_range(Iterator x, Iterator y, size_t size) {
 void ::ch2::recursive_left_shift_vector(std::vector<int> &numbers, size_t shift) {
     auto begin = numbers.begin();
     auto end = numbers.end();
+    shift %= std::distance(begin, end);
     while (begin < end && shift) {
-        shift %= std::distance(begin, end);
-        auto left_size = shift;
         auto right_size = std::distance(begin, end) - shift;
-        if (left_size < right_size) {
-            swap_range(begin, end - left_size, left_size);
-            shift = left_size;
-            end -= left_size;
+        if (shift < right_size) {
+            swap_range(begin, end - shift, shift);
+            end -= shift;
         } else {
             swap_range(begin, end - right_size, right_size);
-            shift = left_size - right_size;
+            shift -= right_size;
             begin += right_size;
         }
     }
