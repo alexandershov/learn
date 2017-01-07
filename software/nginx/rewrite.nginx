@@ -1,0 +1,35 @@
+events {
+}
+
+http {
+     server {
+         listen 8888;
+
+	 location /path {
+	 	  # 'last' says that search for location should start over with the rewritten uri
+ 	 	  rewrite ^/path(.*)$ "/www/${arg_id}" last;
+	 }
+
+	 location /break {
+	 	  # 'break' says that we should stay in this location for further processing
+	 	  root /usr/local/;
+	          rewrite .* "/www/${arg_id}" break;
+	 }
+
+	 location /perm {
+	 	  # 'permanent' says return 301 (with $args)
+	 	  root /usr/local/;
+	          rewrite .* "/www/${arg_id}" permanent;
+	 }
+
+	 location /temp {
+	 	  # 'redirect' says return 302 (with $args)
+	 	  root /usr/local/;
+	          rewrite .* "/www/${arg_id}" redirect;
+	 }
+
+	 location /www {
+	 	  root /usr/local/var;
+	 }
+     }
+}
