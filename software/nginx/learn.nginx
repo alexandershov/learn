@@ -1,0 +1,75 @@
+# logs are in /var/logs/nginx/(access|error).log by default
+# reload me with `nginx -s reload -p . -c learn.nginx`
+# reload will gracefully stop current workers and start new workers
+
+events {
+}
+
+http {
+     upstream flask_app {
+     	      server localhost:9000;
+     }
+
+     server {
+        listen 8888;
+
+	# http GET-params are not matched on location
+	# prefix & exact locations need starting slash, so matching will work
+	# path will added to the root value
+        location / {
+	 	 root /Projects/backend;
+	}
+
+	# highest priority because regex location
+	location ~ py$ {
+	 	 root /Projects/backend/xXx;
+	}
+
+	# case-insensitive regexp
+	location ~* \.TXT$ {
+	         root /Projects/backend/xXx;
+	}
+
+	# if it's the best non-regexp location, then don't do search from regexp locations
+	location ^~ /hello.txt {
+		 return 200 "hello from txt";
+	}
+
+	# don't get picked every because there's the same exact match
+	location /ping.app {
+		return 200 "hello from ping.app prefix";
+	}
+
+	# don't get picked every because there's the same exact match
+	location ~ /ping.app.* {
+  		 return 200 "hello from ping.app regexp";
+	}
+
+	# exact match, has more priority than anything else (even regexes)
+	location = /ping.app {
+		 return 200 "hello from ping.app";
+	}
+
+	# longer than / - more priority
+	location /hello {
+		 # you can nest locations
+		 location ~ \.boom$ {
+		 	  return 403 "oopsie daisy";  # status code
+		 }
+		 proxy_set_header X-Flask whatever;
+		 proxy_set_header X-From-Nginx "xvalue=${http_x_value}";  # adds new header based on other header value
+		 proxy_pass http://flask_app;  # uri path is proxied here
+		 # proxy_pass http://flask_app/;  # uri path is not proxied here (because of trailing slash)
+		 # proxy_pass http://localhost:9000;  # uri path is proxied here
+		 # proxy_pass http://localhost:9000/;  # uri path is not proxied here (because of trailing slash)
+		 add_header X-Response nice;
+	}
+
+	location /hallo {
+		 set $x $arg_who;  # set a new variable
+		 proxy_pass "http://localhost:9000/hello?x=$x";  # new uri path
+	}
+
+	
+     }
+}
