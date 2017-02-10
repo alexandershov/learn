@@ -1,3 +1,5 @@
+#include <fcntl.h>
+#include <unistd.h>
 #include <sys/stat.h>
 
 #include <iostream>
@@ -14,4 +16,10 @@ int main() {
     // modification time, changed when content changes
 	    << ", mtime = " << file_stat.st_mtime
 	    << "\n";
+  if (close(1) != 0) {
+    std::cerr << "couldn't close stdout\n";
+  }
+  // fd is equal to minimum free number, in this case 1 (because we closed 1)
+  int fd = open("../src/main.cpp", O_RDONLY);
+  std::cerr << "open result " << fd << "\n";
 }
