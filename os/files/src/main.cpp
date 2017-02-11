@@ -4,9 +4,13 @@
 
 #include <iostream>
 
-int main() {
+int main(int argc, char **argv) {
+  if (argc != 2) {
+    std::cerr << "usage: files /path/to/file/to/stat\n";
+    return 1;
+  }
   struct stat file_stat;
-  stat("../src/main.cpp", &file_stat);
+  stat(argv[1], &file_stat);
   std::cerr << "ino = " << file_stat.st_ino
     // change time, changed when either inode or contents changes
 	    << ", ctime = " << file_stat.st_ctime
@@ -16,6 +20,8 @@ int main() {
     // modification time, changed when content changes
 	    << ", mtime = " << file_stat.st_mtime
 	    << "\n";
+  std::cerr << "suid = " << (file_stat.st_mode & S_ISUID) << "\n";
+  std::cerr << "sgid = " << (file_stat.st_mode & S_ISGID) << "\n";
   if (close(1) != 0) {
     std::cerr << "couldn't close stdout\n";
   }
