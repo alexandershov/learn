@@ -20,8 +20,14 @@ int main(int argc, char **argv) {
     // modification time, changed when content changes
 	    << ", mtime = " << file_stat.st_mtime
 	    << "\n";
+  // is suid (set user id) is set, then when you're executing a file you'll
+  // effectively run it as file's owner
   std::cerr << "suid = " << (file_stat.st_mode & S_ISUID) << "\n";
   std::cerr << "sgid = " << (file_stat.st_mode & S_ISGID) << "\n";
+  // is sticky bit is set, then only owner of file can delete/rename it
+  // this is used for /tmp directory, everyone can create files in it
+  // but you can't change other's files
+  std::cerr << "sticky = " << (file_stat.st_mode & S_ISVTX) << "\n";
   if (close(1) != 0) {
     std::cerr << "couldn't close stdout\n";
   }
