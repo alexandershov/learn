@@ -55,7 +55,7 @@ def test_task():
     assert d.callback(3) is None
     assert values == [3]
 
-    
+
 def test_callback_returns_task():
     values = [2, 1, 3]
     res = []
