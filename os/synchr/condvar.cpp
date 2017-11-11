@@ -2,17 +2,18 @@
 
 #include <pthread.h>
 
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex = PTHREAD_ERRORCHECK_MUTEX_INITIALIZER_NP;
 pthread_cond_t condvar = PTHREAD_COND_INITIALIZER;
 int child_exited = 0;
 
 void signal_exit() {
-  child_exited = 1;
+  auto result = pthread_mutex_unlock(&mutex);
+  std::cerr << "unlock in child " << result << "\n";
 }
 
 void my_join() {
-  while (!child_exited) {
-  }
+  auto result = pthread_mutex_lock(&mutex);
+  std::cerr << "lock in join " << result << "\n";
 }
 
 void* child_thread(void* data) {
@@ -23,6 +24,7 @@ void* child_thread(void* data) {
 
 int main() {
   pthread_t child;
+  std::cerr << "initial lock " << pthread_mutex_lock(&mutex) << "\n";
   pthread_create(&child, nullptr, child_thread, nullptr);
   my_join();
   std::cerr << "parent done\n";
