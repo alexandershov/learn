@@ -1,6 +1,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
 #include <iostream>
 
@@ -9,6 +10,7 @@ int main(int argc, char **argv) {
     std::cerr << "usage: files /path/to/file/to/stat\n";
     return 1;
   }
+  std::cerr << "euid = " << geteuid() << "\n";
   struct stat file_stat;
   stat(argv[1], &file_stat);
   std::cerr << "ino = " << file_stat.st_ino
