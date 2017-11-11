@@ -12,7 +12,7 @@ pthread_cond_t not_empty_cond = PTHREAD_COND_INITIALIZER;
 int child_exited = 0;
 int NUM_CONSUMERS = 3;
 int NUM_PRODUCERS = 10;
-int BUFFER_SIZE = 5;
+int BUFFER_SIZE = 3;
 
 void random_usleep() {
   int duration = std::rand() % 10000;
@@ -75,11 +75,12 @@ void *consumer_fn(void* bytes) {
   while (true) {
     checked_lock(&mutex, make_description("consumer got lock", data->number));
     while (data->queue->size() == 0) {
-      checked_wait(&not_empty_cond, &mutex, make_description("consumer waiting", data->number));
+      std::cerr << make_description("consumer waiting", data->number) << "\n";
+      checked_wait(&not_empty_cond, &mutex, make_description("consumer waited", data->number));
     }
     int item = data->queue->front();
     data->queue->pop();
-    checked_signal(&not_empty_cond, make_description("consumer signal", data->number));
+    checked_signal(&not_full_cond, make_description("consumer signal", data->number));
     std::cerr << make_description("consumer processed ", data->number) << item << "\n";
     checked_unlock(&mutex, make_description("consumer unlock", data->number));
   }
@@ -93,7 +94,8 @@ void *producer_fn(void* bytes) {
     std::cerr << make_description("produced ", data->number) << item << "\n";
     checked_lock(&mutex, make_description("producer got lock", data->number));
     while (data->queue->size() == BUFFER_SIZE) {
-      checked_wait(&not_full_cond, &mutex, make_description("producer waiting", data->number));
+      std::cerr << make_description("producer waiting", data->number) << "\n";
+      checked_wait(&not_full_cond, &mutex, make_description("producer waited", data->number));
     }
     data->queue->push(item);
     checked_signal(&not_empty_cond, make_description("producer signal", data->number));
