@@ -17,23 +17,39 @@ void checked_unlock(pthread_mutex_t* mutex, const std::string& description) {
   std::cerr << description << " unlock result " << result << "\n";
 }
 
+void checked_wait(pthread_cond_t* condvar, pthread_mutex_t* mutex, const std::string& description) {
+  auto result = pthread_cond_wait(condvar, mutex);
+  std::cerr << description << " wait result " << result << "\n";
+}
+
+void checked_signal(pthread_cond_t* condvar, const std::string& description) {
+  auto result = pthread_cond_signal(condvar);
+  std::cerr << description << " wait result " << result << "\n";
+}
+
 void signal_exit() {
-  checked_unlock(&mutex, "lock in child");
+  checked_lock(&mutex, "lock in child");
+  child_exited = 1;
+  checked_signal(&condvar, "signal in child");
+  checked_unlock(&mutex, "unlock in child");
 }
 
 void my_join() {
   checked_lock(&mutex, "lock in join");
+  while (!child_exited) {
+    checked_wait(&condvar, &mutex, "waiting in parent");
+  }
+  checked_unlock(&mutex, "unlock in join");
 }
 
 void* child_thread(void* data) {
-  std::cerr << "child done\n";
+  std::cerr << "child exiting ...\n";
   signal_exit();
   return nullptr;
 }
 
 int main() {
   pthread_t child;
-  checked_lock(&mutex, "initial lock");
   pthread_create(&child, nullptr, child_thread, nullptr);
   my_join();
   std::cerr << "parent done\n";
